@@ -1,0 +1,553 @@
+[
+  {
+    "id": "eval-01",
+    "category": "single_note_lookup",
+    "query": "What is the maximum retry limit enforced in ADR-001 for conditional edge circuit breakers?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/02_adr_001_langgraph_state_machine.md"
+    ],
+    "ground_truth_answer": "ADR-001 enforces a circuit breaker with MAX_RETRIES = 2 on conditional edges to prevent infinite query rewriting or regeneration loops.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve ADR-001 regarding the LangGraph state machine.",
+      "faithfulness_criteria": "Answer must explicitly state MAX_RETRIES = 2 based on ADR-001.",
+      "relevance_criteria": "Directly identifies the retry limit for conditional edge circuit breakers."
+    }
+  },
+  {
+    "id": "eval-02",
+    "category": "single_note_lookup",
+    "query": "What are the two stages of document chunking defined in ADR-002?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/03_adr_002_two_stage_chunking_chromadb.md"
+    ],
+    "ground_truth_answer": "Stage 1 is structural AST splitting using MarkdownHeaderTextSplitter on #, ##, and ### headers; Stage 2 is semantic bounding using RecursiveCharacterTextSplitter with a 512 token target and 64 token overlap.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve ADR-002 on two-stage document chunking.",
+      "faithfulness_criteria": "Must specify Stage 1 (MarkdownHeaderTextSplitter on headers) and Stage 2 (RecursiveCharacterTextSplitter with 512/64 tokens).",
+      "relevance_criteria": "Directly explains the two chunking stages."
+    }
+  },
+  {
+    "id": "eval-03",
+    "category": "single_note_lookup",
+    "query": "Why did CortexGraph choose OpenAI Structured Outputs with Pydantic in ADR-003?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/04_adr_003_structured_outputs_pydantic.md"
+    ],
+    "ground_truth_answer": "CortexGraph chose OpenAI Structured Outputs backed by strict Pydantic models to guarantee 100% schema adherence and eliminate brittle regex parsing heuristics for grading and routing.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve ADR-003 on OpenAI structured outputs.",
+      "faithfulness_criteria": "Must cite schema guarantees and eliminating regex parsing as the primary rationale.",
+      "relevance_criteria": "Directly addresses why structured outputs with Pydantic were selected."
+    }
+  },
+  {
+    "id": "eval-04",
+    "category": "single_note_lookup",
+    "query": "What caused the context window overflow incident in the October 16 2026 postmortem?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/05_postmortem_2026_10_context_overflow.md"
+    ],
+    "ground_truth_answer": "The incident was caused by unbounded message accumulation appending all turns without pruning or rolling summarization, which exceeded context limits and returned HTTP 400 errors.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve the October 2026 context overflow postmortem.",
+      "faithfulness_criteria": "Must identify unbounded message accumulation without summarization as root cause.",
+      "relevance_criteria": "Directly explains the root cause of the incident."
+    }
+  },
+  {
+    "id": "eval-05",
+    "category": "single_note_lookup",
+    "query": "What circuit breaker and guardrail were introduced after the cyclic hallucination loop postmortem in November 2026?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/06_postmortem_2026_11_rag_hallucination_loop.md"
+    ],
+    "ground_truth_answer": "A generation counter circuit breaker with MAX_RETRIES = 2 and an explicit abstention guardrail when 0 relevant chunks are retrieved were introduced to prevent infinite regeneration loops.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve the November 2026 hallucination loop postmortem.",
+      "faithfulness_criteria": "Must mention generation_count circuit breaker (MAX_RETRIES = 2) and the abstention guardrail.",
+      "relevance_criteria": "Directly details the remediation steps implemented."
+    }
+  },
+  {
+    "id": "eval-06",
+    "category": "single_note_lookup",
+    "query": "How does CortexGraph persist conversation state across server restarts in LangGraph?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/07_langgraph_checkpointer_persistence.md"
+    ],
+    "ground_truth_answer": "CortexGraph persists conversation state using AsyncSqliteSaver for local development and AsyncPostgresSaver for production, keyed deterministically by configurable thread_id.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve the LangGraph checkpointer persistence note.",
+      "faithfulness_criteria": "Must mention AsyncSqliteSaver/AsyncPostgresSaver and configurable thread_id.",
+      "relevance_criteria": "Directly explains state persistence across restarts."
+    }
+  },
+  {
+    "id": "eval-07",
+    "category": "single_note_lookup",
+    "query": "How does the rolling summarization algorithm manage conversation memory in LangGraph?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/09_langgraph_memory_manager_summarization.md"
+    ],
+    "ground_truth_answer": "When message history exceeds 12 messages or 4,000 tokens, older messages are summarized and pruned using RemoveMessage operations while keeping the latest 4 messages intact.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve the memory manager summarization note.",
+      "faithfulness_criteria": "Must specify the thresholds (> 12 messages or 4,000 tokens) and preserving the latest 4 messages.",
+      "relevance_criteria": "Directly outlines the rolling summarization logic."
+    }
+  },
+  {
+    "id": "eval-08",
+    "category": "single_note_lookup",
+    "query": "What distance metric and collection name are configured for ChromaDB vector indexing?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/10_chromadb_cosine_similarity_indexing.md"
+    ],
+    "ground_truth_answer": "ChromaDB is configured with cosine distance (hnsw:space: cosine) under the collection name 'second_brain_notes'.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve the ChromaDB cosine similarity indexing note.",
+      "faithfulness_criteria": "Must identify cosine distance and second_brain_notes collection name.",
+      "relevance_criteria": "Directly provides the metric and collection name."
+    }
+  },
+  {
+    "id": "eval-09",
+    "category": "single_note_lookup",
+    "query": "How does CortexGraph achieve zero-redundancy incremental ingestion of notes in ChromaDB?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/11_chromadb_incremental_sha256_sync.md"
+    ],
+    "ground_truth_answer": "It calculates a SHA-256 doc_hash of file contents before parsing; if the doc_hash matches the existing stored hash, the file is skipped with zero embedding API calls.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve the incremental SHA-256 sync note.",
+      "faithfulness_criteria": "Must explain SHA-256 doc_hash comparison and skipping unchanged files.",
+      "relevance_criteria": "Directly explains the incremental sync mechanism."
+    }
+  },
+  {
+    "id": "eval-10",
+    "category": "single_note_lookup",
+    "query": "What dimension and pricing tradeoffs were evaluated for OpenAI text-embedding-3-small?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/13_openai_embeddings_dimension_tradeoffs.md"
+    ],
+    "ground_truth_answer": "text-embedding-3-small outputs 1536 dimensions at $0.02 per 1M tokens, providing optimal retrieval accuracy and cost efficiency compared to text-embedding-3-large ($0.13 per 1M tokens).",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve the OpenAI embeddings tradeoffs note.",
+      "faithfulness_criteria": "Must report 1536 dimensions and $0.02/1M tokens cost.",
+      "relevance_criteria": "Directly answers the dimension and cost tradeoff question."
+    }
+  },
+  {
+    "id": "eval-11",
+    "category": "multi_note_synthesis",
+    "query": "How do ADR-001 and cyclic recursion limits together prevent infinite loops in Corrective RAG?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/02_adr_001_langgraph_state_machine.md",
+      "data/sample_vault/08_langgraph_cyclic_graphs_and_recursion_limits.md",
+      "data/sample_vault/15_corrective_rag_crag_architecture.md"
+    ],
+    "ground_truth_answer": "ADR-001 defines the explicit LangGraph state machine with circuit breakers; the cyclic limits note and CRAG architecture enforce MAX_RETRIES = 2 for query rewriting and a recursion_limit of 25 steps to guarantee termination.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve ADR-001, cyclic recursion limits, and CRAG architecture notes.",
+      "faithfulness_criteria": "Synthesizes MAX_RETRIES = 2 circuit breaker with recursion limit safeguards.",
+      "relevance_criteria": "Directly explains how state machine structure and iteration bounds prevent infinite loops."
+    }
+  },
+  {
+    "id": "eval-12",
+    "category": "multi_note_synthesis",
+    "query": "How does the two-stage chunking strategy in ADR-002 support ChromaDB cosine indexing and SHA-256 sync?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/03_adr_002_two_stage_chunking_chromadb.md",
+      "data/sample_vault/10_chromadb_cosine_similarity_indexing.md",
+      "data/sample_vault/11_chromadb_incremental_sha256_sync.md"
+    ],
+    "ground_truth_answer": "ADR-002 splits Markdown into structured AST chunks with breadcrumb headers; these chunks are embedded into ChromaDB's cosine index while SHA-256 doc_hashes prevent re-embedding unchanged documents during sync.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve ADR-002, ChromaDB cosine indexing, and SHA-256 sync notes.",
+      "faithfulness_criteria": "Explains how AST breadcrumb chunks are stored in cosine vector space and synced incrementally via doc_hash.",
+      "relevance_criteria": "Synthesizes chunking, vector indexing, and deduplication."
+    }
+  },
+  {
+    "id": "eval-13",
+    "category": "multi_note_synthesis",
+    "query": "How does the conversation memory manager mitigate the 'Lost in the Middle' problem identified in reading notes?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/09_langgraph_memory_manager_summarization.md",
+      "data/sample_vault/22_reading_notes_lost_in_the_middle_rag.md"
+    ],
+    "ground_truth_answer": "The reading notes show that LLMs suffer severe retrieval degradation on facts in the middle of long contexts; the memory manager compacts older turns into a concise summary while keeping the latest 4 messages clean, avoiding context dilution.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve memory manager summarization and Lost in the Middle reading notes.",
+      "faithfulness_criteria": "Connects middle-context attention degradation to rolling summarization and message pruning.",
+      "relevance_criteria": "Directly answers how memory management solves the Lost in the Middle phenomenon."
+    }
+  },
+  {
+    "id": "eval-14",
+    "category": "multi_note_synthesis",
+    "query": "What are the differences between Self-RAG reflection tokens and CortexGraph's LangGraph node grading?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/15_corrective_rag_crag_architecture.md",
+      "data/sample_vault/23_reading_notes_self_rag_reflection.md"
+    ],
+    "ground_truth_answer": "Self-RAG relies on special inline tokens ([Retrieve], [IsRel], [IsSup]) generated by a fine-tuned model, whereas CortexGraph implements these reflection capabilities modularly via separate LangGraph nodes (intent_router, document_grader, hallucination_grader) using structured outputs.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve CRAG architecture and Self-RAG reading notes.",
+      "faithfulness_criteria": "Contrasts inline token fine-tuning with modular LangGraph node routing.",
+      "relevance_criteria": "Directly analyzes the architectural differences."
+    }
+  },
+  {
+    "id": "eval-15",
+    "category": "multi_note_synthesis",
+    "query": "How do the postmortems on context overflow and hallucination loops inform CortexGraph's state machine design?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/02_adr_001_langgraph_state_machine.md",
+      "data/sample_vault/05_postmortem_2026_10_context_overflow.md",
+      "data/sample_vault/06_postmortem_2026_11_rag_hallucination_loop.md"
+    ],
+    "ground_truth_answer": "The context overflow postmortem led to rolling summarization via memory_manager, while the hallucination loop postmortem led to generation_count circuit breakers (MAX_RETRIES = 2) and explicit abstention guardrails embedded into ADR-001.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve ADR-001 and both postmortems.",
+      "faithfulness_criteria": "Synthesizes how context limits and infinite regeneration incidents drove state machine circuit breakers.",
+      "relevance_criteria": "Explains how past failures shaped architectural decisions."
+    }
+  },
+  {
+    "id": "eval-16",
+    "category": "multi_note_synthesis",
+    "query": "How does FastAPI SSE streaming coordinate with Langfuse tracing and correlation ID middleware?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/17_langfuse_tracing_runnable_config.md",
+      "data/sample_vault/18_fastapi_sse_streaming_architecture.md",
+      "data/sample_vault/19_structlog_correlation_id_middleware.md"
+    ],
+    "ground_truth_answer": "Inbound requests establish X-Request-Id and X-Trace-Id via structlog middleware; Langfuse RunnableConfig binds these IDs to child spans while SSE streams real-time node_status, token, and citation events tied to the trace.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve Langfuse tracing, FastAPI SSE, and structlog middleware notes.",
+      "faithfulness_criteria": "Traces request correlation IDs through Langfuse spans into streamed SSE events.",
+      "relevance_criteria": "Explains the end-to-end telemetry and streaming pipeline."
+    }
+  },
+  {
+    "id": "eval-17",
+    "category": "multi_note_synthesis",
+    "query": "How do Tenacity retry policies protect against OpenAI rate limits and latency spikes in GPT-4o-mini?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/14_openai_gpt4o_mini_latency_benchmarks.md",
+      "data/sample_vault/20_resiliency_tenacity_exponential_backoff.md"
+    ],
+    "ground_truth_answer": "While GPT-4o-mini provides ~30 ms TTFT, API calls can suffer HTTP 429 rate limits or transient timeouts; Tenacity wraps these calls with exponential backoff (multiplier=1, max=10) and jitter across 3 attempts to prevent session failures.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve GPT-4o-mini benchmarks and Tenacity resiliency notes.",
+      "faithfulness_criteria": "Combines GPT-4o-mini latency profiles with Tenacity retry parameters.",
+      "relevance_criteria": "Directly explains resiliency against transient OpenAI errors."
+    }
+  },
+  {
+    "id": "eval-18",
+    "category": "multi_note_synthesis",
+    "query": "How does WikiLink normalization enable hybrid knowledge graph and vector retrieval?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/24_knowledge_graphs_vs_vector_retrieval.md",
+      "data/sample_vault/25_obsidian_vault_linking_and_wikilinks.md"
+    ],
+    "ground_truth_answer": "WikiLink normalization parses [[Target#Anchor]] syntax into slugified metadata during AST chunking; this allows hybrid retrieval where ChromaDB handles semantic similarity and WikiLink graphs traverse explicit document relationships.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve Knowledge Graphs vs Vectors and Obsidian WikiLinks notes.",
+      "faithfulness_criteria": "Explains how normalized WikiLinks bridge vector search and relational graph traversal.",
+      "relevance_criteria": "Synthesizes link normalization with hybrid retrieval."
+    }
+  },
+  {
+    "id": "eval-19",
+    "category": "multi_note_synthesis",
+    "query": "How do RAG Triad evaluation metrics map onto LangGraph's document_grader and hallucination_grader nodes?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/15_corrective_rag_crag_architecture.md",
+      "data/sample_vault/16_evals_rag_triad_metrics_precision_faithfulness.md"
+    ],
+    "ground_truth_answer": "The RAG Triad comprises Context Precision, Faithfulness, and Answer Relevance; document_grader enforces Context Precision by filtering irrelevant chunks, while hallucination_grader evaluates Faithfulness against verified context.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve CRAG architecture and RAG triad metrics notes.",
+      "faithfulness_criteria": "Maps document_grader to Context Precision and hallucination_grader to Faithfulness.",
+      "relevance_criteria": "Directly aligns evaluation metrics with graph nodes."
+    }
+  },
+  {
+    "id": "eval-20",
+    "category": "multi_note_synthesis",
+    "query": "How does Transformer Self-Attention complexity influence document chunking and context management in CortexGraph?",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/03_adr_002_two_stage_chunking_chromadb.md",
+      "data/sample_vault/21_reading_notes_attention_is_all_you_need.md",
+      "data/sample_vault/22_reading_notes_lost_in_the_middle_rag.md"
+    ],
+    "ground_truth_answer": "Transformer self-attention scales quadratically O(N^2) and exhibits positional bias ('Lost in the Middle'); CortexGraph addresses this by bounding chunks to 512 tokens (ADR-002) and pruning conversation history via rolling summarization.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must retrieve ADR-002, Attention Is All You Need, and Lost in the Middle notes.",
+      "faithfulness_criteria": "Connects O(N^2) complexity and positional bias to 512-token chunk boundaries and context pruning.",
+      "relevance_criteria": "Synthesizes theoretical Transformer properties with practical RAG engineering."
+    }
+  },
+  {
+    "id": "eval-21",
+    "category": "temporal_or_tag_filtered",
+    "query": "List the architectural decision records tagged with 'adr' that relate to chunking and storage.",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/03_adr_002_two_stage_chunking_chromadb.md"
+    ],
+    "ground_truth_answer": "ADR-002: Two-Stage Document Chunking for ChromaDB Vector Store defines the structural AST splitting and semantic bounding for personal vault indexing.",
+    "metadata_filters": {
+      "tags": ["adr", "chunking"]
+    },
+    "rubric": {
+      "context_criteria": "Must retrieve ADR-002 matching adr and chunking tags.",
+      "faithfulness_criteria": "Answers based exclusively on ADR-002 content.",
+      "relevance_criteria": "Filters accurately by tag criteria."
+    }
+  },
+  {
+    "id": "eval-22",
+    "category": "temporal_or_tag_filtered",
+    "query": "Find all debugging postmortems tagged with 'postmortem' created in October 2026.",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/05_postmortem_2026_10_context_overflow.md"
+    ],
+    "ground_truth_answer": "The October 16 2026 postmortem covers the Unbounded Context Overflow incident in multi-turn chat caused by lack of message history pruning.",
+    "metadata_filters": {
+      "tags": ["postmortem"],
+      "created_before_ts": 1793404800
+    },
+    "rubric": {
+      "context_criteria": "Must retrieve the October 2026 postmortem (05_postmortem_2026_10_context_overflow.md).",
+      "faithfulness_criteria": "Focuses on the October 2026 context overflow incident.",
+      "relevance_criteria": "Satisfies both tag and temporal constraints."
+    }
+  },
+  {
+    "id": "eval-23",
+    "category": "temporal_or_tag_filtered",
+    "query": "Retrieve reading notes tagged with 'reading-notes' focused on attention and transformers.",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/21_reading_notes_attention_is_all_you_need.md"
+    ],
+    "ground_truth_answer": "Reading Notes: Attention Is All You Need covers the Transformer architecture, Multi-Head Self-Attention formulation, and implications for RAG chunk sizes.",
+    "metadata_filters": {
+      "tags": ["reading-notes", "transformers"]
+    },
+    "rubric": {
+      "context_criteria": "Must retrieve note 21 on Attention Is All You Need.",
+      "faithfulness_criteria": "Accurately details Vaswani et al. paper notes.",
+      "relevance_criteria": "Matches reading-notes and transformers tags."
+    }
+  },
+  {
+    "id": "eval-24",
+    "category": "temporal_or_tag_filtered",
+    "query": "Find notes tagged with 'langfuse' regarding observability and tracing instrumentation.",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/17_langfuse_tracing_runnable_config.md"
+    ],
+    "ground_truth_answer": "Langfuse Tracing Instrumentation via RunnableConfig details injecting CallbackHandler into LangGraph config and nesting spans per node.",
+    "metadata_filters": {
+      "tags": ["langfuse"]
+    },
+    "rubric": {
+      "context_criteria": "Must retrieve note 17 on Langfuse tracing instrumentation.",
+      "faithfulness_criteria": "Describes RunnableConfig callback handler injection.",
+      "relevance_criteria": "Matches langfuse tag filter."
+    }
+  },
+  {
+    "id": "eval-25",
+    "category": "temporal_or_tag_filtered",
+    "query": "Retrieve ADR notes with tag 'adr' discussing structured outputs with Pydantic.",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/04_adr_003_structured_outputs_pydantic.md"
+    ],
+    "ground_truth_answer": "ADR-003: OpenAI Structured Outputs with Pydantic specifies using strict Pydantic models for intent classification, query analysis, and grading.",
+    "metadata_filters": {
+      "tags": ["adr", "structured-outputs"]
+    },
+    "rubric": {
+      "context_criteria": "Must retrieve ADR-003 note.",
+      "faithfulness_criteria": "Details Pydantic structured output decision.",
+      "relevance_criteria": "Filters by adr and structured-outputs tags."
+    }
+  },
+  {
+    "id": "eval-26",
+    "category": "temporal_or_tag_filtered",
+    "query": "Find notes tagged with 'fastapi' or 'sse' detailing server-sent events streaming architecture.",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/18_fastapi_sse_streaming_architecture.md"
+    ],
+    "ground_truth_answer": "FastAPI SSE Streaming Architecture details the event protocol including node_status, token chunks, and final citation events.",
+    "metadata_filters": {
+      "tags": ["fastapi", "sse"]
+    },
+    "rubric": {
+      "context_criteria": "Must retrieve note 18 on FastAPI SSE streaming.",
+      "faithfulness_criteria": "Lists the SSE event types accurately.",
+      "relevance_criteria": "Matches fastapi and sse tags."
+    }
+  },
+  {
+    "id": "eval-27",
+    "category": "temporal_or_tag_filtered",
+    "query": "Retrieve notes tagged with 'resiliency' discussing exponential backoff retries created on or after November 1 2026.",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/20_resiliency_tenacity_exponential_backoff.md"
+    ],
+    "ground_truth_answer": "Resiliency and Exponential Backoff Retries with Tenacity outlines the 3-attempt exponential backoff and jitter policy for OpenAI API calls.",
+    "metadata_filters": {
+      "tags": ["resiliency"],
+      "created_after_ts": 1793491200
+    },
+    "rubric": {
+      "context_criteria": "Must retrieve note 20 on Tenacity exponential backoff.",
+      "faithfulness_criteria": "Explains Tenacity retry policy created in November 2026.",
+      "relevance_criteria": "Satisfies temporal cutoff and resiliency tag."
+    }
+  },
+  {
+    "id": "eval-28",
+    "category": "temporal_or_tag_filtered",
+    "query": "Find notes tagged with 'evals' regarding RAG triad evaluation metrics.",
+    "expected_ground_truth_source_paths": [
+      "data/sample_vault/16_evals_rag_triad_metrics_precision_faithfulness.md"
+    ],
+    "ground_truth_answer": "RAG Triad Evaluation: Precision, Faithfulness, and Relevance defines the targets (Context Precision >= 0.85, Faithfulness >= 0.90, Answer Relevance >= 0.85).",
+    "metadata_filters": {
+      "tags": ["evals", "metrics"]
+    },
+    "rubric": {
+      "context_criteria": "Must retrieve note 16 on RAG triad evaluation.",
+      "faithfulness_criteria": "Cites the 3 metrics and their target thresholds.",
+      "relevance_criteria": "Matches evals and metrics tags."
+    }
+  },
+  {
+    "id": "eval-29",
+    "category": "out_of_domain_abstention",
+    "query": "What is the capital of Australia and what is its current metropolitan population?",
+    "expected_ground_truth_source_paths": [],
+    "ground_truth_answer": "I could not find any notes or documents in your knowledge base regarding 'What is the capital of Australia and what is its current metropolitan population?'. The personal vault does not contain relevant information on this topic.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must NOT retrieve or accept vault chunks as relevant evidence.",
+      "faithfulness_criteria": "Must explicitly state the information is absent without fabricating an answer.",
+      "relevance_criteria": "Directly acknowledges vault abstention.",
+      "abstention_criteria": "Abstains cleanly with zero hallucinated geographical facts."
+    }
+  },
+  {
+    "id": "eval-30",
+    "category": "out_of_domain_abstention",
+    "query": "How do you configure an Apache Cassandra multi-datacenter cluster in Kubernetes with snitch settings?",
+    "expected_ground_truth_source_paths": [],
+    "ground_truth_answer": "I could not find any notes or documents in your knowledge base regarding Apache Cassandra multi-datacenter configuration. The personal vault does not contain relevant information on this topic.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Must NOT accept any vault chunks as relevant.",
+      "faithfulness_criteria": "Must abstain from generating Cassandra configurations not present in the vault.",
+      "relevance_criteria": "Acknowledges absence of Cassandra Kubernetes documentation.",
+      "abstention_criteria": "Abstains cleanly."
+    }
+  },
+  {
+    "id": "eval-31",
+    "category": "out_of_domain_abstention",
+    "query": "What is the traditional recipe and hydration ratio for authentic Neapolitan sourdough pizza dough?",
+    "expected_ground_truth_source_paths": [],
+    "ground_truth_answer": "I could not find any notes or documents in your knowledge base regarding sourdough pizza recipes. The personal vault does not contain relevant information on this topic.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Zero chunks retrieved or accepted.",
+      "faithfulness_criteria": "Must explicitly state information is absent.",
+      "relevance_criteria": "Acknowledges lack of culinary notes.",
+      "abstention_criteria": "Abstains cleanly."
+    }
+  },
+  {
+    "id": "eval-32",
+    "category": "out_of_domain_abstention",
+    "query": "Who won the FIFA World Cup final in 1994 and what was the penalty shootout score?",
+    "expected_ground_truth_source_paths": [],
+    "ground_truth_answer": "I could not find any notes or documents in your knowledge base regarding the 1994 FIFA World Cup. The personal vault does not contain relevant information on this topic.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Zero chunks accepted as relevant evidence.",
+      "faithfulness_criteria": "Must abstain without citing sports trivia.",
+      "relevance_criteria": "Acknowledges lack of sports records.",
+      "abstention_criteria": "Abstains cleanly."
+    }
+  },
+  {
+    "id": "eval-33",
+    "category": "out_of_domain_abstention",
+    "query": "How do quantum key distribution protocols like BB84 detect eavesdropping via photon polarization?",
+    "expected_ground_truth_source_paths": [],
+    "ground_truth_answer": "I could not find any notes or documents in your knowledge base regarding quantum key distribution protocols. The personal vault does not contain relevant information on this topic.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Zero chunks accepted as relevant.",
+      "faithfulness_criteria": "Must abstain from hallucinating physics explanations absent from vault.",
+      "relevance_criteria": "Acknowledges absence of quantum cryptography notes.",
+      "abstention_criteria": "Abstains cleanly."
+    }
+  },
+  {
+    "id": "eval-34",
+    "category": "out_of_domain_abstention",
+    "query": "What are the tax implications, like-kind criteria, and 45-day identification deadlines under IRS 1031 property rules?",
+    "expected_ground_truth_source_paths": [],
+    "ground_truth_answer": "I could not find any notes or documents in your knowledge base regarding IRS 1031 property rules. The personal vault does not contain relevant information on this topic.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Zero chunks accepted as relevant.",
+      "faithfulness_criteria": "Must abstain from generating tax advice absent from vault.",
+      "relevance_criteria": "Acknowledges absence of tax notes.",
+      "abstention_criteria": "Abstains cleanly."
+    }
+  },
+  {
+    "id": "eval-35",
+    "category": "out_of_domain_abstention",
+    "query": "What are the rules, board levels, and attack vectors for playing three-dimensional chess in Star Trek?",
+    "expected_ground_truth_source_paths": [],
+    "ground_truth_answer": "I could not find any notes or documents in your knowledge base regarding three-dimensional chess. The personal vault does not contain relevant information on this topic.",
+    "metadata_filters": {},
+    "rubric": {
+      "context_criteria": "Zero chunks accepted as relevant.",
+      "faithfulness_criteria": "Must abstain cleanly without inventing rules.",
+      "relevance_criteria": "Acknowledges absence of sci-fi board game notes.",
+      "abstention_criteria": "Abstains cleanly."
+    }
+  }
+]

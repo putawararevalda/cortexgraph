@@ -1,0 +1,63 @@
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: cortexgraph-chromadb
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/v1/heartbeat || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cortexgraph-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - AUTO_ONTOLOGY_MCP_URL=${AUTO_ONTOLOGY_MCP_URL:-http://host.docker.internal:3003/mcp}
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  auto-ontology-mcp:
+    image: auto-ontology-mcp:latest
+    container_name: cortexgraph-auto-ontology-mcp
+    ports:
+      - "3003:3003"
+    environment:
+      - AUTO_ONTOLOGY_MCP_HOST=0.0.0.0
+      - AUTO_ONTOLOGY_MCP_PORT=3003
+      - AUTO_ONTOLOGY_API_URL=${AUTO_ONTOLOGY_API_URL:-http://localhost:8080}
+    restart: unless-stopped
+    profiles:
+      - mcp
+      - full
+
+volumes:
+  chroma_data:
+    name: cortexgraph_chroma_data
